@@ -169,7 +169,7 @@ public class GCSFileObject extends AbstractFileObject {
         for (Blob blob : blobs.iterateAll()) {
             String name = blob.getName();
             if (!name.equalsIgnoreCase(path)) {
-                String strippedName = blob.getName().substring(path.length());
+                String strippedName = name.substring(path.length());
                 children.add(strippedName);
             }
         }
