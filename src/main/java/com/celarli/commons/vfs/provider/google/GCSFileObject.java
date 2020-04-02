@@ -151,29 +151,32 @@ public class GCSFileObject extends AbstractFileObject {
     protected String[] doListChildren() throws Exception {
 
         log.debug(format("Listing directory below:%s", this.getName().toString()));
+
         URLFileName urlFileName = (URLFileName) this.getName();
         Bucket bucket = this.storage.get(urlFileName.getHostName());
         if (bucket == null || !bucket.exists()) {
             throw new IllegalArgumentException(format("Bucket %s does not exists", urlFileName.getHostName()));
         }
 
-        String url = computePostfix(urlFileName);
-        if (url.startsWith("/")) {
-            url = url.substring(1);
+        String path = computePostfix(urlFileName);
+        if (path.startsWith("/")) {
+            path = path.substring(1);
         }
 
-        Page<Blob> blobs = bucket.list(Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix(url));
+        Page<Blob> blobs = bucket.list(Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix(path));
 
-        List<String> childrenList = new ArrayList<>();
+        List<String> children = new ArrayList<>();
         for (Blob blob : blobs.iterateAll()) {
             String name = blob.getName();
-            if (!name.equalsIgnoreCase(url)) {
-                childrenList.add("/" + name);
+            if (!name.equalsIgnoreCase(path)) {
+                String strippedName = blob.getName().substring(path.length());
+                children.add(strippedName);
             }
         }
-        String[] ret = new String[childrenList.size()];
-        childrenList.toArray(ret);
-        return ret;
+        String[] childrenArray = new String[children.size()];
+        children.toArray(childrenArray);
+
+        return childrenArray;
     }
 
 
