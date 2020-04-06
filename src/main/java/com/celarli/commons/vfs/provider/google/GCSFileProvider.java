@@ -6,7 +6,6 @@ import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileSystem;
 import org.apache.commons.vfs2.FileSystemOptions;
 import org.apache.commons.vfs2.provider.AbstractOriginatingFileProvider;
-import org.apache.commons.vfs2.provider.URLFileNameParser;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,6 +51,6 @@ public class GCSFileProvider extends AbstractOriginatingFileProvider {
 
     public GCSFileProvider() {
 
-        setFileNameParser(new URLFileNameParser(80));
+        setFileNameParser(GCSFileNameParser.getInstance());
     }
 }
