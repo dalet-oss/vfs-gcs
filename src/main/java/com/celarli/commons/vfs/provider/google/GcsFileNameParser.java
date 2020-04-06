@@ -13,7 +13,7 @@ public class GcsFileNameParser extends AbstractFileNameParser {
     /**
      * GCS file name parser instance
      */
-    private static final GcsFileNameParser instance = new GcsFileNameParser();
+    private static final GcsFileNameParser INSTANCE = new GcsFileNameParser();
 
 
     /**
@@ -21,7 +21,7 @@ public class GcsFileNameParser extends AbstractFileNameParser {
      */
     public static GcsFileNameParser getInstance() {
 
-        return instance;
+        return INSTANCE;
     }
 
 
