@@ -37,21 +37,19 @@ public class GcsFileNameParser extends AbstractFileNameParser {
     public FileName parseUri(final VfsComponentContext context, final FileName base, final String uri)
             throws FileSystemException {
 
-        StringBuilder name = new StringBuilder();
+        StringBuilder pathStringBuilder = new StringBuilder();
 
-        String scheme = UriParser.extractScheme(uri, name);
-
-        UriParser.normalisePath(name);
+        String scheme = UriParser.extractScheme(uri, pathStringBuilder);
 
         // Normalize separators in the path
-        UriParser.fixSeparators(name);
+        UriParser.fixSeparators(pathStringBuilder);
 
         // Normalise the path
-        FileType fileType = UriParser.normalisePath(name);
+        FileType fileType = UriParser.normalisePath(pathStringBuilder);
 
         // Extract bucket name
-        final String bucketName = UriParser.extractFirstElement(name);
+        final String bucketName = UriParser.extractFirstElement(pathStringBuilder);
 
-        return new GcsFileName(scheme, bucketName, name.toString(), fileType);
+        return new GcsFileName(scheme, bucketName, pathStringBuilder.toString(), fileType);
     }
 }
