@@ -5,12 +5,12 @@ import org.apache.commons.vfs2.FileType;
 import org.apache.commons.vfs2.provider.AbstractFileName;
 
 
-public class GCSFileName extends AbstractFileName {
+public class GcsFileName extends AbstractFileName {
 
     private final String bucket;
 
 
-    protected GCSFileName(final String scheme, final String bucket, final String path, final FileType type) {
+    protected GcsFileName(final String scheme, final String bucket, final String path, final FileType type) {
 
         super(scheme, path, type);
         this.bucket = bucket;
@@ -26,7 +26,7 @@ public class GCSFileName extends AbstractFileName {
     @Override
     public FileName createName(String absPath, FileType type) {
 
-        return new GCSFileName(getScheme(), bucket, absPath, type);
+        return new GcsFileName(getScheme(), bucket, absPath, type);
     }
 
 

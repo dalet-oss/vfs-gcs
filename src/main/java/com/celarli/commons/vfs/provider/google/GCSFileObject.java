@@ -90,7 +90,7 @@ public class GCSFileObject extends AbstractFileObject {
     protected FileType doGetType() throws Exception {
 
         log.debug("Trying to get file type for:" + this.getName());
-        GCSFileName fileName = (GCSFileName) this.getName();
+        GcsFileName fileName = (GcsFileName) this.getName();
 
         if (fileName != null && fileName.getType() == FileType.FOLDER) {
             return FileType.FOLDER;
@@ -151,7 +151,7 @@ public class GCSFileObject extends AbstractFileObject {
 
         log.debug(format("Listing directory below:%s", this.getName().toString()));
 
-        GCSFileName fileName = (GCSFileName) this.getName();
+        GcsFileName fileName = (GcsFileName) this.getName();
         Bucket bucket = this.storage.get(fileName.getBucket());
         if (bucket == null || !bucket.exists()) {
             throw new IllegalArgumentException(format("Bucket %s does not exists", fileName.getBucket()));
@@ -180,7 +180,7 @@ public class GCSFileObject extends AbstractFileObject {
 
 
     @Nonnull
-    private String computePostfix(@Nonnull GCSFileName fileName) {
+    private String computePostfix(@Nonnull GcsFileName fileName) {
 
         String postfix = fileName.getPath();
         if (!postfix.endsWith("/")) {
@@ -235,7 +235,7 @@ public class GCSFileObject extends AbstractFileObject {
     @Override
     protected void doAttach() throws Exception {
 
-        GCSFileName fileName = (GCSFileName) this.getName();
+        GcsFileName fileName = (GcsFileName) this.getName();
 
         Bucket bucket = this.storage.get(fileName.getBucket());
 
@@ -271,7 +271,7 @@ public class GCSFileObject extends AbstractFileObject {
 
     private void getCurrentBlob(boolean detectContentType) {
 
-        GCSFileName fileName = (GCSFileName) this.getName();
+        GcsFileName fileName = (GcsFileName) this.getName();
 
         String path = fileName.getPath();
 
@@ -371,7 +371,7 @@ public class GCSFileObject extends AbstractFileObject {
         }
 
         if (canCopyServerSide(file)) {
-            GCSFileName fileName = (GCSFileName) this.getName();
+            GcsFileName fileName = (GcsFileName) this.getName();
             String path = fileName.getPath();
             if (!path.equals("/") && path.startsWith("/")) {
                 path = path.substring(1);

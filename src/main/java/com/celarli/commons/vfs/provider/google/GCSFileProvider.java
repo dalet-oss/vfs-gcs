@@ -51,6 +51,6 @@ public class GCSFileProvider extends AbstractOriginatingFileProvider {
 
     public GCSFileProvider() {
 
-        setFileNameParser(GCSFileNameParser.getInstance());
+        setFileNameParser(GcsFileNameParser.getInstance());
     }
 }

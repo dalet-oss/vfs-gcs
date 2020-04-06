@@ -8,24 +8,24 @@ import org.apache.commons.vfs2.provider.UriParser;
 import org.apache.commons.vfs2.provider.VfsComponentContext;
 
 
-public class GCSFileNameParser extends AbstractFileNameParser {
+public class GcsFileNameParser extends AbstractFileNameParser {
 
     /**
      * GCS file name parser instance
      */
-    private static final GCSFileNameParser instance = new GCSFileNameParser();
+    private static final GcsFileNameParser instance = new GcsFileNameParser();
 
 
     /**
      * Gets singleton
      */
-    public static GCSFileNameParser getInstance() {
+    public static GcsFileNameParser getInstance() {
 
         return instance;
     }
 
 
-    private GCSFileNameParser() {
+    private GcsFileNameParser() {
 
     }
 
@@ -52,6 +52,6 @@ public class GCSFileNameParser extends AbstractFileNameParser {
         // Extract bucket name
         final String bucketName = UriParser.extractFirstElement(name);
 
-        return new GCSFileName(scheme, bucketName, name.toString(), fileType);
+        return new GcsFileName(scheme, bucketName, name.toString(), fileType);
     }
 }
