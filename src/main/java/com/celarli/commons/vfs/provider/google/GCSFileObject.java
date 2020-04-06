@@ -180,6 +180,39 @@ public class GCSFileObject extends AbstractFileObject {
     }
 
 
+    /**
+     * Override to return resolved file object of children.
+     * Failures for some file due to special characters like % (i.e. test%test.txt) would be ignored and returns rest of the files
+     *
+     * @return FileObject array - ideally GCSFileObject
+     */
+    @Override
+    protected FileObject[] doListChildrenResolved() throws Exception {
+
+        String[] files = this.doListChildren();
+
+        if (files != null && files.length > 0) {
+
+            // Create file objects for the children
+            List<FileObject> children = new ArrayList<>();
+            for (int i = 0; i < files.length; i++) {
+                String fileName = files[i];
+                try {
+                    children.add(resolveFile(fileName, NameScope.CHILD));
+                }
+                catch (Exception e) {
+                    //Swallowed to ensure file name with valid characters returned instead of breaking entire call.
+                    log.error("Failed to resolve file object for " + fileName + " file", e);
+                }
+            }
+
+            return children.toArray(new FileObject[children.size()]);
+        }
+
+        return null;
+    }
+
+
     @Nonnull
     private String computePostfix(@Nonnull URLFileName urlFileName) {
 
