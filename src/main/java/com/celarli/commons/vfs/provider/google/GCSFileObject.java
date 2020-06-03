@@ -237,6 +237,7 @@ public class GCSFileObject extends AbstractFileObject {
         return Channels.newInputStream(readChannel);
     }
 
+
     @Nonnull
     @Override
     protected OutputStream doGetOutputStream(boolean bAppend) {
@@ -435,6 +436,7 @@ public class GCSFileObject extends AbstractFileObject {
 
             String bucket = fileName.getBucket();
             GCSFileObject gcsFile = (GCSFileObject) file;
+            gcsFile.attachIfRequired();
             CopyWriter copyWriter = gcsFile.currentBlob.copyTo(BlobId.of(bucket, path));
 
             try {
@@ -451,13 +453,8 @@ public class GCSFileObject extends AbstractFileObject {
         else {
             streamCopy(file, selector, copyStreamListener);
 
-            try {
-                //Required to refresh blob once it is copied to get updated metadata of blob, i.e. size
-                this.doAttach();
-            }
-            catch (Exception e) {
-                //swallowed intentionally to continue working further
-            }
+            //Required to refresh blob once it is copied to get updated metadata of blob, i.e. size
+            this.attachIfRequired();
         }
     }
 
@@ -500,8 +497,7 @@ public class GCSFileObject extends AbstractFileObject {
                 if (srcFile.getType().hasContent()) {
                     try (
                             InputStream inputStream = srcFile.getContent().getInputStream();
-                            OutputStream outputStream = destFile.getContent().getOutputStream())
-                    {
+                            OutputStream outputStream = destFile.getContent().getOutputStream()) {
                         Util.copyStream(
                                 new BufferedInputStream(inputStream, COPY_BUFFER_SIZE),
                                 outputStream,
@@ -579,15 +575,27 @@ public class GCSFileObject extends AbstractFileObject {
      */
     public URL signedURL(long duration) throws Exception {
 
-        if (isNull(this.currentBlob)) {
-            this.doAttach();
-        }
+        attachIfRequired();
 
         if (nonNull(this.currentBlob)) {
             return this.currentBlob.signUrl(duration, TimeUnit.SECONDS);
         }
 
         return null;
+    }
+
+
+    private void attachIfRequired() {
+
+        try {
+            if (isNull(this.currentBlob)) {
+                this.doAttach();
+            }
+        }
+        catch (Exception e) {
+            log.error("Failed to attach", e);
+            //swallowed intentionally to work further
+        }
     }
 
 
