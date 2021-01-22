@@ -427,28 +427,61 @@ public class GCSFileObject extends AbstractFileObject {
 
         if (canCopyServerSide(file)) {
 
-            GcsFileName fileName = (GcsFileName) this.getName();
-            String path = fileName.getPath();
+            // Locate the files to copy across
+            final ArrayList<FileObject> files = new ArrayList<>();
+            file.findFiles(selector, false, files);
 
-            if (!path.equals(PATH_DELIMITER) && path.startsWith(PATH_DELIMITER)) {
-                path = path.substring(1);
+            // Copy everything across
+            final int numFiles = files.size();
+
+            for (int i = 0; i < numFiles; i++) {
+
+                final GCSFileObject srcFile = (GCSFileObject) files.get(i);
+
+                // Determine the destination file
+                final String relPath = file.getName().getRelativeName(srcFile.getName());
+                final GCSFileObject destFile = (GCSFileObject) resolveFile(relPath, NameScope.DESCENDENT_OR_SELF);
+
+                // Clean up the destination file, if necessary
+                if (destFile.exists() && destFile.getType() != srcFile.getType()) {
+                    // The destination file exists, and is not of the same type, so delete it
+                    // TODO - add a pluggable policy for deleting and overwriting existing files
+                    destFile.delete(Selectors.SELECT_ALL);
+                }
+
+                // Copy across
+                try {
+                    if (srcFile.getType().hasContent()) {
+                        GcsFileName destFileName = (GcsFileName) destFile.getName();
+                        String path = destFileName.getPath();
+
+                        if (!path.equals(PATH_DELIMITER) && path.startsWith(PATH_DELIMITER)) {
+                            path = path.substring(1);
+                        }
+
+                        String bucket = destFileName.getBucket();
+                        srcFile.attachIfRequired();
+                        CopyWriter copyWriter = srcFile.currentBlob.copyTo(BlobId.of(bucket, path));
+
+                        try {
+                            //Need to reset file type after copy operation
+                            destFile.injectType(destFile.doGetType());
+                        }
+                        catch (Exception e) {
+                            //swallowed intentionally to continue working further
+                        }
+
+                        //Current blob is now copied one
+                        destFile.currentBlob = copyWriter.getResult();
+                    }
+                    else if (srcFile.getType().hasChildren()) {
+                        destFile.createFolder();
+                    }
+                }
+                catch (final IOException e) {
+                    throw new FileSystemException("vfs.provider/copy-file.error", new Object[] { srcFile, destFile }, e);
+                }
             }
-
-            String bucket = fileName.getBucket();
-            GCSFileObject gcsFile = (GCSFileObject) file;
-            gcsFile.attachIfRequired();
-            CopyWriter copyWriter = gcsFile.currentBlob.copyTo(BlobId.of(bucket, path));
-
-            try {
-                //Need to reset file type after copy operation
-                this.injectType(this.doGetType());
-            }
-            catch (Exception e) {
-                //swallowed intentionally to continue working further
-            }
-
-            //Current blob is now copied one
-            this.currentBlob = copyWriter.getResult();
         }
         else {
             streamCopy(file, selector, copyStreamListener);
