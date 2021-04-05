@@ -37,4 +37,5 @@ public class GcsFileName extends AbstractFileName {
         buffer.append("://");
         buffer.append(bucket);
     }
+
 }

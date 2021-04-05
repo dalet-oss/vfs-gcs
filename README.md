@@ -1,20 +1,32 @@
-# Dalet fork
-The purpose of this fork is to maintain any changes made by Dalet, until those changes are merged upstream.
-From this fork we publish artifacts to JCenter; instead of `com.celarli.commons:vfs-gcs` the artifacts are named
-`com.dalet.celarli.commons:vfs-gcs` to make clear their different origin.
-
-## Versioning model
-The upstream repository owner seems reasonably responsive to PRs, so we derive our versioning model from the upstream
-version, as follows:
--  Every push to master gets built and published
--  The version number we publish (simply using git describe) is:
-      `<upstream version>-<number-of-commits-since>-g<hash-of-HEAD>`
-   For example, version `1.0.8-4-g604ac6d` implies a build of commit `604ac6d`, which is 4 commits on from the upstream
-   published version `1.0.8`.
-
-
 # vfs-gcs
 Google Cloud Storage provider for Apache Commons VFS - http://commons.apache.org/proper/commons-vfs/
+
+
+## Origins
+
+The code in this repo was originally derived from https://github.com/ltouati/vfs-gcs.  That repo is only intermittently
+maintained, and no releases have been issued since 2019.  As a result, we continue to develop this repo independently,
+and occasionally offer our changes upstream.
+
+
+## Builds, releases etc.
+
+This project is built using Travis CI.
+[![Build Status](https://travis-ci.com/dalet-oss/vfs-gcs.svg?branch=master)](https://travis-ci.com/dalet-oss/vfs-gcs)
+
+Published artifacts are available on Maven Central as `com.github.dalet-oss:vfs-gcs`.
+
+For the latest version, see https://github.com/dalet-oss/vfs-gcs/releases.
+
+#### Note for maintainers:
+
+-  Every push to master gets built, but not published
+-  To publish artifacts, it is necessary to specify a version number by adding an appropriate Git tag to `HEAD` with an
+   appropriate prefix.  For example, tagging HEAD with `release/2.3.8` will cause version `2.3.8` to be published on
+   the next build.
+
+
+## Documentation
 
 From the website...
 "Commons VFS provides a single API for accessing various different file systems. It presents a uniform view of the files from various different sources, such as the files on local disk, on an HTTP server, or inside a Zip archive."
@@ -28,7 +40,7 @@ The system will use your GCP credentials in the following way
 3. App Engine standard environment credentials.
 4. Compute Engine credentials.
 
-Here is an example using the API
+Here is an example using the API:
 ```java
  String currFileNameStr;
 
@@ -65,4 +77,3 @@ Here is an example using the API
         temp.delete();
         currFile.delete();
 ```
-

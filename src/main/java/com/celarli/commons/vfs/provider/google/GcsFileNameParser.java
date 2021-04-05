@@ -25,9 +25,7 @@ public class GcsFileNameParser extends AbstractFileNameParser {
     }
 
 
-    private GcsFileNameParser() {
-
-    }
+    private GcsFileNameParser() { }
 
 
     /**
@@ -52,4 +50,5 @@ public class GcsFileNameParser extends AbstractFileNameParser {
 
         return new GcsFileName(scheme, bucketName, pathStringBuilder.toString(), fileType);
     }
+
 }
