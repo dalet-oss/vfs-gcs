@@ -12,7 +12,7 @@ and occasionally offer our changes upstream.
 ## Builds, releases etc.
 
 This project is built using Travis CI.
-[![Build Status](https://travis-ci.com/dalet-oss/vfs-gcs.svg?branch=master)](https://travis-ci.com/dalet-oss/vfs-gcs)
+[![Build Status](https://app.travis-ci.com/dalet-oss/vfs-gcs.svg?branch=master)](https://app.travis-ci.com/dalet-oss/vfs-gcs)
 
 Published artifacts are available on Maven Central as `com.github.dalet-oss:vfs-gcs`.
 
