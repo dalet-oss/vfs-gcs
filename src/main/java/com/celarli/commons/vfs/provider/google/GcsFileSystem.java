@@ -43,7 +43,6 @@ public class GcsFileSystem extends AbstractFileSystem {
      *
      * @param abstractFileName the file name of the object to interact with
      * @return the file object
-     * @throws Exception if we can't create the file object
      */
     @Nonnull
     @Override

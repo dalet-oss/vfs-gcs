@@ -83,10 +83,9 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
      *
      * @param modtime the last modified time.
      * @return true if successfully modified, false otherwise.
-     * @throws Exception in case an error happens.
      */
     @Override
-    protected boolean doSetLastModifiedTime(long modtime) throws Exception {
+    protected boolean doSetLastModifiedTime(long modtime) {
 
         return true;
     }
@@ -94,7 +93,7 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
     @Nonnull
     @Override
-    protected FileType doGetType() throws Exception {
+    protected FileType doGetType() {
 
         GcsFileName fileName = (GcsFileName) this.getName();
 
@@ -221,7 +220,7 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
 
     @Override
-    protected long doGetContentSize() throws Exception {
+    protected long doGetContentSize() {
 
         return this.currentBlob.getSize();
     }
@@ -229,7 +228,7 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
     @Nonnull
     @Override
-    protected InputStream doGetInputStream() throws Exception {
+    protected InputStream doGetInputStream() {
 
         final ReadChannel readChannel = this.storage.reader(this.currentBlob.getBlobId());
         readChannel.setChunkSize(COPY_BUFFER_SIZE);
@@ -265,11 +264,9 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
     /**
      * Callback for handling create folder requests.  Since there are no folders
      * in GCS this call is ignored.
-     *
-     * @throws Exception ignored
      */
     @Override
-    protected void doCreateFolder() throws Exception {
+    protected void doCreateFolder() {
 
         log.info("doCreateFolder() called.");
     }
@@ -278,18 +275,16 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
     /**
      * Used for creating folders.  It's not used since GCS does not have
      * the concept of folders.
-     *
-     * @throws FileSystemException ignored
      */
     @Override
-    public void createFolder() throws FileSystemException {
+    public void createFolder() {
 
         log.debug("createFolder() called.");
     }
 
 
     @Override
-    protected void doAttach() throws Exception {
+    protected void doAttach() {
 
         GcsFileName fileName = (GcsFileName) this.getName();
 
@@ -310,7 +305,7 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
 
     @Override
-    protected void doDelete() throws Exception {
+    protected void doDelete() {
 
         doAttach();
 
@@ -389,7 +384,6 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
      * Callback for handling the <code>getLastModifiedTime()</code> Commons VFS API call.
      *
      * @return Time since the file has last been modified
-     * @throws Exception
      */
     @Override
     protected long doGetLastModifiedTime() throws Exception {
@@ -412,11 +406,6 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
     /**
      * This method help to copy blob server side if source and destination location belongs to same project.
      * It also takes listener to report progress of file/folder being copied.
-     *
-     * @param file
-     * @param selector
-     * @param copyStreamListener
-     * @throws FileSystemException
      */
     public void copyFrom(FileObject file, FileSelector selector, CopyStreamListener copyStreamListener)
             throws FileSystemException {
@@ -494,11 +483,6 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
     /**
      * Method copied from AbstractFileObject of Apache VFS lib. With support to report listener for progress.
-     *
-     * @param file
-     * @param selector
-     * @param copyStreamListener
-     * @throws FileSystemException
      */
     private void streamCopy(FileObject file, FileSelector selector, CopyStreamListener copyStreamListener)
             throws FileSystemException {
@@ -552,9 +536,6 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
     /**
      * Compares credential of source and destination FileObject and return true if they are equals. This helps to copy file
      * directly between buckets for same google storage project
-     *
-     * @param sourceFileObject
-     * @return
      */
     private boolean canCopyServerSide(FileObject sourceFileObject) {
 
@@ -588,9 +569,6 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
     /**
      * Returns false to reply on copyFrom method in case moving/copying file within same google storage project
-     *
-     * @param fileObject
-     * @return
      */
     @Override
     public boolean canRenameTo(FileObject fileObject) {
@@ -601,12 +579,8 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
     /**
      * Generate signed url to directly access file.
-     *
-     * @param duration - in seconds
-     * @return
-     * @throws Exception
      */
-    public URL signedURL(long duration) throws Exception {
+    public URL signedURL(long duration) {
 
         attachIfRequired();
 
@@ -627,7 +601,7 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
         }
         catch (Exception e) {
             log.error("Failed to attach", e);
-            //swallowed intentionally to work further
+            // swallowed intentionally to work further
         }
     }
 
@@ -642,4 +616,5 @@ public class GcsFileObject extends AbstractFileObject<GcsFileSystem> {
 
         return null;
     }
+
 }
