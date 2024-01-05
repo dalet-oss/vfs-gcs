@@ -37,6 +37,8 @@ public class GcsFileNameParser extends AbstractFileNameParser {
 
         StringBuilder pathStringBuilder = new StringBuilder();
 
+        // TODO: handle deprecation by passing an additional `Scheme[] schemes` poarameter as the first param; this
+        //       array should include all valid GCS schemes, e.g. `gs` in `gs://blah`; are there any others to consider?
         String scheme = UriParser.extractScheme(uri, pathStringBuilder);
 
         // Normalize separators in the path
