@@ -1,3 +1,6 @@
+[![CI Build](https://github.com/dalet-oss/vfs-gcs/actions/workflows/ci-build.yml/badge.svg)](https://github.com/dalet-oss/vfs-gcs/actions/workflows/ci-build.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/vfs-gcs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/vfs-gcs) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/dalet-oss/vfs-gcs/blob/master/LICENSE)
+---
+
 # vfs-gcs
 Google Cloud Storage provider for Apache Commons VFS - http://commons.apache.org/proper/commons-vfs/
 
@@ -11,8 +14,12 @@ and occasionally offer our changes upstream.
 
 ## Builds, releases etc.
 
-This project is built using Travis CI.
-[![Build Status](https://app.travis-ci.com/dalet-oss/vfs-gcs.svg?branch=master)](https://app.travis-ci.com/dalet-oss/vfs-gcs)
+This project is built using Github Actions.
+
+-  All pushes to the `master` branch trigger the [![CI Build](https://github.com/dalet-oss/vfs-gcs/actions/workflows/ci-build.yml/badge.svg)](https://github.com/dalet-oss/vfs-gcs/actions/workflows/ci-build.yml)
+   workflow.
+-  All pushes of Git tags matching `release/*` trigger the [![CI Publish to Maven Central](https://github.com/dalet-oss/vfs-gcs/actions/workflows/ci-publish.yml/badge.svg?branch=master&event=push)](https://github.com/dalet-oss/vfs-gcs/actions/workflows/ci-publish.yml)
+   workflow.
 
 Published artifacts are available on Maven Central as `com.github.dalet-oss:vfs-gcs`.
 
