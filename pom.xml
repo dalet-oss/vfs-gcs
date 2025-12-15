@@ -47,7 +47,7 @@
     <revision>DEV</revision>
   </properties>
 
-  <!-- To check for plugin updates, uncomment the below and run `mvn org.codehaus.mojo:versions-maven-plugin:2.8.1:display-plugin-updates` -->
+  <!-- To check for plugin updates, uncomment the below and run `mvn org.codehaus.mojo:versions-maven-plugin:2.20.1:display-plugin-updates` -->
   <!--  <prerequisites>-->
   <!--    <maven>3.8.8</maven>  &lt;!&ndash; This is the version used by Github Actions at present &ndash;&gt;-->
   <!--  </prerequisites>-->
@@ -103,7 +103,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.3.1</version>
+            <version>3.4.0</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -186,7 +186,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.19.0</version>
+      <version>3.20.0</version>
     </dependency>
 
     <dependency>
@@ -216,22 +216,22 @@
     <dependency>
       <groupId>org.apache.tika</groupId>
       <artifactId>tika-core</artifactId>
-      <version>2.9.4</version>
+      <version>3.2.2</version>
     </dependency>
 
     <!-- Test dependencies -->
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.14.1</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.22.1</version>
+      <version>2.25.2</version>
       <scope>test</scope>
     </dependency>
 
